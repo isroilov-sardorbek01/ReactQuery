@@ -23,6 +23,14 @@ function Header() {
                     >
                         2-Masala
                     </NavLink>
+                    <NavLink
+                        className={({ isActive }) =>
+                            isActive ? "active" : "nonactive"
+                        }
+                        to="/masala3"
+                    >
+                        3-Masala
+                    </NavLink>
                 </ul>
                 <button className="px-3 py-1 transition-all bg-white rounded-md active:scale-90 ">
                     SUBMIT

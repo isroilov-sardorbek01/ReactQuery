@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 function Masala2() {
@@ -14,14 +14,8 @@ function Masala2() {
         queryKey: ["data"],
         queryFn: takeData,
     });
-    if (isLoading) {
-        return <h1>LOADING...</h1>;
-    }
-    if (isError) {
-        return <h1>No data</h1>;
-    }
-
     const queryClient = useQueryClient();
+
     const mutation = useMutation(
         (post) => axios.post("http://localhost:3000/posts", post),
         {
@@ -31,7 +25,22 @@ function Masala2() {
         }
     );
 
+    function validate() {
+        if (title === "") {
+            alert("Title is not valid");
+            return false;
+        }
+        if (body === "") {
+            alert("body is not valid!");
+            return false;
+        }
+        return true;
+    }
     function handlePost() {
+        const isValid = validate();
+        if (!isValid) {
+            return;
+        }
         const post = {
             id: Date.now(),
             title,
@@ -40,6 +49,13 @@ function Masala2() {
         mutation.mutate(post);
         setTitle("");
         setBody("");
+    }
+
+    if (isLoading) {
+        return <h1>LOADING...</h1>;
+    }
+    if (isError) {
+        return <h1>No data</h1>;
     }
 
     return (
@@ -83,7 +99,7 @@ function Masala2() {
                             return (
                                 <div
                                     className="w-full p-3 text-white bg-black rounded-lg"
-                                    key={data.id}
+                                    key={value.id}
                                 >
                                     <li>{value.title}</li>
                                     <li>{value.body}</li>
